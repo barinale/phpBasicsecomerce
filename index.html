@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST" id="POSTFORM">
+        username:<input type="text" name="username" id="name"/></br>
+        password:<input type="password" name="password" id="password"/></br>
+        <input type="submit" value="sign up" id="submit"/>
+    </form>
+    <script>
+        const submit = document.querySelector("#POSTFORM");
+        let obj={};
+        submit.addEventListener("submit",(e)=>{
+            e.preventDefault();
+            const name = document.querySelector("#name").value;
+            const pass = document.querySelector("#password").value;
+
+              var xhr = new XMLHttpRequest();
+            xhr.open('POST','Login.php',true);
+            xhr.setRequestHeader("content-type","application/x-www-form-urlencoded");
+            var parm =  `username=${name}&password=${pass}`;
+            xhr.onload = function(){
+              
+                obj = JSON.parse(this.responseText);
+                console.log(obj)
+            }
+            xhr.send(parm);
+        })
+        
+
+
+    </script>
+</body>
+</html>
