@@ -12,9 +12,11 @@
         password:<input type="password" name="password" id="password"/></br>
         <input type="submit" value="sign up" id="submit"/>
     </form>
+    <h4 id="Message"></h4>
     <script>
         const submit = document.querySelector("#POSTFORM");
         let obj={};
+        const message = document.querySelector("#Message");
         submit.addEventListener("submit",(e)=>{
             e.preventDefault();
             const name = document.querySelector("#name").value;
@@ -27,11 +29,18 @@
             xhr.onload = function(){
               
                 obj = JSON.parse(this.responseText);
-                console.log(obj)
+                rederiction();
             }
             xhr.send(parm);
-        })
-        
+        });
+        function rederiction(){
+            if(obj.status=='ok'){
+                const href = window.location.href;
+                window.location.replace(href+"/adminPage.html");
+            }else{
+                message.innerText=obj.message;
+            }
+        }
 
 
     </script>
