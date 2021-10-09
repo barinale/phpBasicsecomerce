@@ -7,16 +7,17 @@
     <title>Document</title>
 </head>
 <body>
-    <table id="USERS">
+    <table id="USERS" border="1px solid black">
         <caption>users</caption>
         <tr>
+            <th>id</th>
             <th>Nom</th>
             <th>email</th>
             <th>password</th>
             <th>types</th>
         </tr>
     </table>
-    <table id="category">
+    <table id="category" border="1px solid black">
         <caption>Catgeroy</caption>
         <tr>
             <th>id</th>
@@ -25,26 +26,58 @@
         </tr>
 
     </table>
-    <table id="product">
+    <table id="product" border="1px solid black">
         <caption>Product</caption>
         <tr>
             <th>id</th>
             <th>name</th>
             <th>price</th>
+            <th>category</th>
             <th>descount</th>
         </tr>
     </table>
     <script>
+        const user = document.querySelector('#USERS');
+        const category = document.querySelector('#category');
+        const product = document.querySelector('#product');
+            let objectUser = {};
+
         window.onload=function(){
             var xhr = new XMLHttpRequest();
-            let objectUser={};
             xhr.open("POST","admin.php",true);
             xhr.onload = function(){
-                console.log(this.responseText);
-                object = JSON.parse(this.responseText);
-
+                objectUser = JSON.parse(this.responseText);
+                addToTable();
+                for(var data in objectUser){
+                    for(let i =0;i<objectUser[data].length;i++){
+                            let th =`<tr>`;
+                        for(let k = 0;k< objectUser[data][i].length;k++){
+                            th +="<th>"+ objectUser[data][i][k]+"</th>";
+                        }
+                        th +="</tr>";
+                        console.log(data)
+                        switch(data){
+                            case 'user':
+                            user.innerHTML += th;
+                            break;
+                            case 'category':
+                            category.innerHTML+=th;
+                            break;
+                            case 'product':
+                                product.innerHTML+=th;
+                                brea;
+                        }
+                    } 
+                 
+                }
             }
             xhr.send();
+            
+        }
+
+        function addToTable(){
+            // for(let i =0;i<objectUser.length)
+
         }
     </script>
 </body>
