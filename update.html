@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="POST" id="updateForm">
+
+    </form>
+    <script>
+        const member =[["id","number"],["nome","text"],["email","text"],["password","password"],["types","number"]];
+        const Category =[["id","number"],["name","text"],["NumberOfProduct","text"]];
+        const Product =[["id","number"],["name","text"], ["category", "number"],["price","number"],["descount","number"]];
+        const submitForm = document.querySelector("#updateForm");
+        window.onload = function(){
+            const get = window.location.href.split("?")[1].split("&");
+            let form = ``;
+            switch(get[1].split('=')[1]){
+                case 'member':
+                    for(let i =0;i<member.length;i++){
+                        form +=`${member[i][0]}<input id="${member[i][0]}" type="${member[i][1]}" /> </br>`;
+                    }
+                    submitForm.innerHTML +=form;
+                    submitForm.innerHTML +=`<input type="submit" value="udpate">`;
+                    
+                break;
+                case 'category':
+                    for (let i = 0; i < Category.length; i++) {
+                        form += `${Category[i][0]}<input id="${Category[i][0]}" type="${Category[i][1]}" /> </br>`;
+                    }
+                    submitForm.innerHTML += form;
+                    submitForm.innerHTML += `<input type="submit" value="udpate">`;
+                    
+                break;
+                case 'product':
+                    for (let i = 0; i < Product.length; i++) {
+                        form += `${Product[i][0]}<input id="${Product[i][0]}" type="${Product[i][1]}" /> </br>`;
+                    }
+                    submitForm.innerHTML += form;
+                    submitForm.innerHTML += `<input type="submit" value="udpate">`;
+                    
+                break;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET','select.php?table='+ get[1].split('=')[1]+'&id='+ get[0].split('=')[1],true);
+            xhr.onload = function(){
+                const object = JSON.parse(this.responseText);
+                switch(get[1].split('=')[1]){
+                    case 'member':
+                        for(let i =0;i<member.length;i++){
+                            document.querySelector("#"+member[i][0]).value= object[member[i][0]];
+                            console.log(document.querySelector("#" + member[i][0]))
+                        }
+                        break;
+                        case 'product':
+                                       for (let i = 0; i < Product.length; i++) {
+                            document.querySelector("#" + Product[i][0]).value = object[Product[i][0]];
+                            console.log(document.querySelector("#" + Product[i][0]))
+                        }
+                        break;
+                        case 'category':
+                                      for (let i = 0; i < Category.length; i++) {
+                            document.querySelector("#" + Category[i][0]).value = object[Category[i][0]];
+                        }
+                        break;
+                        
+                }
+            
+            }
+            xhr.send();
+        }
+        submitForm.addEventListener("submit",(e)=>{
+            e.preventDefault();
+            console.log('te')
+        })
+    </script>
+</body>
+</html>

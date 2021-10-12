@@ -16,6 +16,7 @@
         $num['status']='no';
         $num['message']='no user like that';
     }
+    
     header('Content-Type: application/json');
     echo json_encode($num);
     mysqli_free_result($res);

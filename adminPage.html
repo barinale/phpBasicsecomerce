@@ -8,7 +8,7 @@
 </head>
 <body>
     <table id="USERS" border="1px solid black">
-        <caption>users</caption>
+        <caption>member</caption>
         <tr>
             <th>id</th>
             <th>Nom</th>
@@ -41,42 +41,70 @@
         const category = document.querySelector('#category');
         const product = document.querySelector('#product');
             let objectUser = {};
-
+        let userType ;
         window.onload=function(){
             var xhr = new XMLHttpRequest();
             xhr.open("POST","admin.php",true);
             xhr.onload = function(){
                 objectUser = JSON.parse(this.responseText);
-                addToTable();
-                for(var data in objectUser){
-                    for(let i =0;i<objectUser[data].length;i++){
-                            let th =`<tr>`;
-                        for(let k = 0;k< objectUser[data][i].length;k++){
-                            th +="<th>"+ objectUser[data][i][k]+"</th>";
-                        }
-                        th +="</tr>";
-                        console.log(data)
-                        switch(data){
-                            case 'user':
-                            user.innerHTML += th;
-                            break;
-                            case 'category':
-                            category.innerHTML+=th;
-                            break;
-                            case 'product':
-                                product.innerHTML+=th;
-                                brea;
-                        }
-                    } 
-                 
-                }
+                userType = objectUser.type;
+
+                addToTable(objectUser);
+                
+                
             }
             xhr.send();
             
         }
 
-        function addToTable(){
+        function addToTable(type){
             // for(let i =0;i<objectUser.length)
+            
+            for (var data in objectUser) {
+                for (let i = 0; objectUser[data]!=null && objectUser[data] != 'admin' && i < objectUser[data].length; i++) {
+                    
+                    let th = `<tr>`;
+                    for (let k = 0; k < objectUser[data][i].length; k++) {
+                        th += "<th>" + objectUser[data][i][k] + "</th>";
+                     
+                    }
+                       if (type = "admin") {
+                        th += '<th><button  onClick="delet(\''+ data+'\',\''+ objectUser[data][i][0]+'\')">suppprimi</button>';
+                        th += '<th><button  onClick="update(\''+ data +'\',\'' + objectUser[data][i][0] +'\')">update</button>';
+
+                    }
+                    th += "</tr>";
+                    switch (data) {
+                        case 'member':
+                            user.innerHTML += th;
+                            break;
+                        case 'category':
+                            category.innerHTML += th;
+                            break;
+                        case 'product':
+                            product.innerHTML += th;
+                            break;
+                        case 'type':
+                            objectUser = objectUser[data];
+                            break;
+                    }
+                }
+
+            }
+        }
+        function delet(table,id){
+            var xhrDl = new XMLHttpRequest();
+            xhrDl.open("GET","delete.php?id="+id+"&table="+table,true);
+            xhrDl.onload=function(){
+                console.log(xhrDl.responseText);
+            }
+            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xhrDl.send();
+
+        }
+        function update(table,id){
+            const href= window.location.href.replace("adminPage.html", "update.html");
+            window.location.href=href+"?id="+id+"&table="+table;
 
         }
     </script>
